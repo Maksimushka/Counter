@@ -1,0 +1,26 @@
+.display {
+    height: 150px;
+    width: 350px;
+    border: 2px solid #61dafb;
+    border-radius: 5px;
+    margin: 0 auto 30px;
+    background-color: #61dafb;
+    position: relative;
+}
+
+.count {
+    top: 35px;
+    left: 160px;
+    position: absolute;
+    font-size: 70px;
+    font-weight: 600;
+}
+
+.fullCount {
+    top: 35px;
+    left: 160px;
+    position: absolute;
+    font-size: 70px;
+    font-weight: 600;
+    color: red;
+}

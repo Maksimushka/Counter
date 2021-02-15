@@ -1,60 +1,82 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Counter} from "./components/counter/counter/Counter";
 import {SettingCounter} from "./components/counter/settingCounter/SettingCounter";
 
+
 function App() {
 
-  const [startCountValue, setStartCountValue] = useState<number>(0);
-  const [maxCountValue, setMaxCountValue] = useState<number>(5)
+    let [maxValue, setMaxValue] = useState(5)
+    let [startValue, setStartValue] = useState(0)
+    let [counter, setCounter] = useState(startValue)
+    let [error, setError] = useState("")
 
-  useEffect(() => {
-    let newValue = localStorage.getItem('counterValue')
-    if (newValue) {
-      let newCount = JSON.parse(newValue)
-      setStartCountValue(newCount)
+    let [isCount, setIsCount] = useState(false)
+    let disableInc = !isCount || counter === maxValue
+    let disableReset = !isCount || counter === startValue
+    let disableSet = isCount || !!error
+    let counterTop = counter === maxValue
+
+    function increaseCount() {
+        counter += 1
+        setCounter(counter)
     }
-  }, [])
+    function resetCount() {
+        setCounter(startValue)
+    }
+    function setSetting() {
+        setIsCount(false)
+    }
+    function setCount() {
+        setIsCount(true)
+    }
+    function changeMaxValue(value: number) {
+        if (value < 0 || value <= startValue) {
+            setError("Incorrect value")
+            setMaxValue(value)
+        } else {
+            setMaxValue(value)
+            setError("")
+        }
+    }
+    function changeStartValue(value: number) {
+        if (value < 0 || value >= maxValue) {
+            setError("Incorrect value")
+            setStartValue(value)
+        } else {
+            setStartValue(value)
+            setCounter(value)
+            setError("")
+        }
+    }
 
-  useEffect( () => {
-    localStorage.setItem('counterValue', JSON.stringify(startCountValue))
-  }, [startCountValue] )
+    return (
+        <div className="App">
+            <SettingCounter
+                countValue={ counter }
+                setSetting={setSetting}
+                setCount={setCount}
+                changeMaxValue={ changeMaxValue }
+                changeStartValue={ changeStartValue }
+                maxValue={maxValue}
+                startValue={startValue}
+                isCount={isCount}
+                error={ error }
+                disableSet={ disableSet }
+            />
+            <Counter
+                counterTop={ counterTop }
+                disableInc={ disableInc }
+                disableReset={ disableReset }
+                error={ error }
+                isCount={isCount}
+                increaseCount={increaseCount}
+                resetCount={resetCount}
+                countValue={ counter }
+            />
 
-
-  const increaseCount = () => {
-    let newCount = startCountValue + 1
-    setStartCountValue(newCount)
-  }
-  const resetCount = () => {
-    setStartCountValue(0)
-  }
-
-  const setStartValue = (value: any) => {
-    setStartCountValue(value)
-  }
-
-  const setMaxValue = (value: any) => {
-    setMaxCountValue(value)
-  }
-
-
-
-  return (
-    <div className="App">
-      <SettingCounter
-          setStartValue={ setStartValue }
-          setMaxValue={ setMaxValue }
-          startCount={ startCountValue }
-          maxCount={ maxCountValue }
-      />
-      <Counter increaseCount={ increaseCount }
-               resetCount={ resetCount }
-               startCount={ startCountValue }
-               maxCount={ maxCountValue }
-      />
-
-    </div>
-  );
+        </div>
+    );
 }
 
 export default App;

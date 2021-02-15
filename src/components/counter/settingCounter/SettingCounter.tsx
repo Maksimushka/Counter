@@ -1,44 +1,40 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from './SettingCounter.module.css';
 import {Button} from "../button/Button";
 import {SettingDisplay} from "../settingDisplay/SettingDisplay";
 
 type SettingCounterPropsType = {
-    setStartValue: (value: any) => void
-    setMaxValue: (value: any) => void
-    startCount: number
-    maxCount: number
+    isCount: boolean
+    countValue: number | string
+    setCount: () => void
+    setSetting: () => void
+    maxValue: number
+    startValue: number
+    changeMaxValue: (value: number) => void
+    changeStartValue: (value: number) => void
+    error: string
+    disableSet: boolean
 }
 
 export function SettingCounter(props: SettingCounterPropsType) {
 
-    let [minCount, setMinCount] = useState(props.startCount)
-    let [maxCount, setMaxCount] = useState(props.maxCount)
-
-    let setCount = () => {
-        props.setStartValue(minCount)
-        props.setMaxValue(maxCount)
-    }
-
-    let setMinCount1 = (value: any) => {
-        setMinCount(value)
-    }
-    let setMaxCount1 = (value: any) => {
-        setMaxCount(value)
-    }
 
     return (
         <div className={ s.SetCounter }>
             <SettingDisplay
-                setMinCount={ setMinCount1 }
-                setMaxCount={ setMaxCount1 }
-                startCount={ minCount }
-                maxCount={ maxCount }
+                countValue={ props.countValue }
+                setSetting={ props.setSetting }
+                changeMaxValue={ props.changeMaxValue }
+                changeStartValue={ props.changeStartValue }
+                maxValue={ props.maxValue }
+                startValue={ props.startValue }
+                error={ props.error }
             />
             <div className={s.buttons}>
-                <Button onChangeCount={ setCount }
-                        maxCount={ props.maxCount }
-                        startCount={ props.startCount }>set</Button>
+                <Button
+                    onChangeCount={ props.setCount }
+                    disable={ props.disableSet }
+                        >set</Button>
             </div>
         </div>
     );

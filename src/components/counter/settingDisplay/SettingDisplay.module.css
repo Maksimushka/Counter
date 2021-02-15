@@ -31,3 +31,8 @@
     display: flex;
     justify-content: space-around;
 }
+
+.error {
+    background-color: #ec7676;
+    border-color: red;
+}

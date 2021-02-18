@@ -23,7 +23,7 @@ export function restoreValue(key: string, state: number) {
 
 export function SettingDisplay(props: SettingDisplayPropsType) {
     function onChangeMaxHandler(e: ChangeEvent<HTMLInputElement>) {
-        let newMaxValue = JSON.parse(e.currentTarget.value)
+        let newMaxValue = e.currentTarget.valueAsNumber
         props.changeMaxValue(newMaxValue)
     }
 

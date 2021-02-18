@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Counter} from "./components/counter/counter/Counter";
 import {SettingCounter} from "./components/counter/settingCounter/SettingCounter";
-
 
 function App() {
 
@@ -10,8 +9,39 @@ function App() {
     let [startValue, setStartValue] = useState(0)
     let [counter, setCounter] = useState(startValue)
     let [error, setError] = useState("")
-
     let [isCount, setIsCount] = useState(false)
+
+    useEffect(() => {
+
+        let valueAsString = localStorage.getItem('values')
+        if (valueAsString) {
+            let a = JSON.parse(valueAsString)
+            setStartValue(a.startValue)
+            setMaxValue(a.maxValue)
+        }
+
+        // let valueAsString = localStorage.getItem('counterMaxValue')
+        // if (valueAsString) {
+        //     let newValue = JSON.parse(valueAsString)
+        //     setMaxValue(newValue)
+        // }
+        //
+        // let startAsString = localStorage.getItem('counterStartValue')
+        // if (startAsString) {
+        //     let newValue = JSON.parse(startAsString)
+        //     setStartValue(newValue)
+        //     setCounter(newValue)
+        // }
+    }, [])
+
+    React.useEffect(() => {
+        !error && localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
+    }, [maxValue])
+    React.useEffect(() => {
+        !error && localStorage.setItem('counterStartValue', JSON.stringify(startValue))
+    }, [startValue])
+
+
     let disableInc = !isCount || counter === maxValue
     let disableReset = !isCount || counter === startValue
     let disableSet = isCount || !!error
@@ -21,15 +51,28 @@ function App() {
         counter += 1
         setCounter(counter)
     }
+
     function resetCount() {
         setCounter(startValue)
     }
+
     function setSetting() {
         setIsCount(false)
     }
+
     function setCount() {
         setIsCount(true)
+        setTolocalStorage()
     }
+
+    function setTolocalStorage() {
+        let values = {
+            startValue,
+            maxValue
+        }
+        localStorage.setItem('values', JSON.stringify(values))
+    }
+
     function changeMaxValue(value: number) {
         if (value < 0 || value <= startValue) {
             setError("Incorrect value")
@@ -39,6 +82,7 @@ function App() {
             setError("")
         }
     }
+
     function changeStartValue(value: number) {
         if (value < 0 || value >= maxValue) {
             setError("Incorrect value")
@@ -53,26 +97,26 @@ function App() {
     return (
         <div className="App">
             <SettingCounter
-                countValue={ counter }
+                countValue={counter}
                 setSetting={setSetting}
                 setCount={setCount}
-                changeMaxValue={ changeMaxValue }
-                changeStartValue={ changeStartValue }
+                changeMaxValue={changeMaxValue}
+                changeStartValue={changeStartValue}
                 maxValue={maxValue}
                 startValue={startValue}
                 isCount={isCount}
-                error={ error }
-                disableSet={ disableSet }
+                error={error}
+                disableSet={disableSet}
             />
             <Counter
-                counterTop={ counterTop }
-                disableInc={ disableInc }
-                disableReset={ disableReset }
-                error={ error }
+                counterTop={counterTop}
+                disableInc={disableInc}
+                disableReset={disableReset}
+                error={error}
                 isCount={isCount}
                 increaseCount={increaseCount}
                 resetCount={resetCount}
-                countValue={ counter }
+                countValue={counter}
             />
 
         </div>

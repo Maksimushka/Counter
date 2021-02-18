@@ -12,8 +12,12 @@ export function Display(props: DisplayPropsType) {
     let countClass = `${s.SPAN} ${props.counterTop ? s.full : ""}`
 
     return (
-        <div className={ displayClass }>
-            { props.error ? <span className={s.SPAN}>{props.error}</span> : <span className={ countClass }>{ props.countValue }</span> }
+        <div className={displayClass}>
+            {
+                props.error
+                    ? <span className={s.SPAN}>{props.error}</span>
+                    : <span className={countClass}>{props.countValue}</span>
+            }
         </div>
     );
 }

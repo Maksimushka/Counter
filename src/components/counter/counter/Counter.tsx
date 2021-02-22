@@ -4,29 +4,32 @@ import {Display} from "../display/Display";
 import {Button} from "../button/Button";
 
 type CounterPropsType = {
-    countValue: number | string
+    counter: number | string
     increaseCount: () => void
     resetCount: () => void
     isCount: boolean
     error: string
-    disableInc: boolean
-    disableReset: boolean
-    counterTop: boolean
+    maxValue: number
+    startValue: number
 }
 
-export function Counter(props: CounterPropsType) {
+export function Counter({isCount, error, resetCount, increaseCount, counter, maxValue, startValue}: CounterPropsType) {
+    let disableInc = !isCount || counter === maxValue
+    let disableReset = !isCount || counter === startValue
+    let counterTop = counter === maxValue
+
     return (
         <div className={ s.counter }>
             <Display
-                counterTop={props.counterTop}
-                error={props.error}
-                countValue={props.isCount ? props.countValue: 'PRESS BUTTON SET'}
+                counterTop={counterTop}
+                error={error}
+                countValue={isCount ? counter: 'PRESS BUTTON SET'}
             />
             <div className={s.buttons}>
-                <Button onChangeCount={ props.increaseCount }
-                        disable={ props.disableInc }>inc</Button>
-                <Button onChangeCount={ props.resetCount }
-                        disable={ props.disableReset }>reset</Button>
+                <Button onChangeCount={ increaseCount }
+                        disable={ disableInc }>inc</Button>
+                <Button onChangeCount={ resetCount }
+                        disable={ disableReset }>reset</Button>
             </div>
         </div>
     );

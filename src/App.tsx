@@ -12,46 +12,19 @@ function App() {
     let [isCount, setIsCount] = useState(false)
 
     useEffect(() => {
-
         let valueAsString = localStorage.getItem('values')
         if (valueAsString) {
             let a = JSON.parse(valueAsString)
             setStartValue(a.startValue)
+            setCounter(a.startValue)
             setMaxValue(a.maxValue)
         }
-
-        // let valueAsString = localStorage.getItem('counterMaxValue')
-        // if (valueAsString) {
-        //     let newValue = JSON.parse(valueAsString)
-        //     setMaxValue(newValue)
-        // }
-        //
-        // let startAsString = localStorage.getItem('counterStartValue')
-        // if (startAsString) {
-        //     let newValue = JSON.parse(startAsString)
-        //     setStartValue(newValue)
-        //     setCounter(newValue)
-        // }
     }, [])
-
-    React.useEffect(() => {
-        !error && localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
-    }, [maxValue])
-    React.useEffect(() => {
-        !error && localStorage.setItem('counterStartValue', JSON.stringify(startValue))
-    }, [startValue])
-
-
-    let disableInc = !isCount || counter === maxValue
-    let disableReset = !isCount || counter === startValue
-    let disableSet = isCount || !!error
-    let counterTop = counter === maxValue
 
     function increaseCount() {
         counter += 1
         setCounter(counter)
     }
-
     function resetCount() {
         setCounter(startValue)
     }
@@ -59,13 +32,11 @@ function App() {
     function setSetting() {
         setIsCount(false)
     }
-
     function setCount() {
         setIsCount(true)
-        setTolocalStorage()
+        setToLocalStorage()
     }
-
-    function setTolocalStorage() {
+    function setToLocalStorage() {
         let values = {
             startValue,
             maxValue
@@ -82,7 +53,6 @@ function App() {
             setError("")
         }
     }
-
     function changeStartValue(value: number) {
         if (value < 0 || value >= maxValue) {
             setError("Incorrect value")
@@ -97,7 +67,6 @@ function App() {
     return (
         <div className="App">
             <SettingCounter
-                countValue={counter}
                 setSetting={setSetting}
                 setCount={setCount}
                 changeMaxValue={changeMaxValue}
@@ -106,17 +75,15 @@ function App() {
                 startValue={startValue}
                 isCount={isCount}
                 error={error}
-                disableSet={disableSet}
             />
             <Counter
-                counterTop={counterTop}
-                disableInc={disableInc}
-                disableReset={disableReset}
+                maxValue={ maxValue }
                 error={error}
                 isCount={isCount}
                 increaseCount={increaseCount}
                 resetCount={resetCount}
-                countValue={counter}
+                counter={counter}
+                startValue={startValue}
             />
 
         </div>

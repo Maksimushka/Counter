@@ -7,16 +7,17 @@ type DisplayPropsType = {
     counterTop: boolean
 }
 
-export function Display(props: DisplayPropsType) {
-    let displayClass = `${s.display} ${props.error ? s.displayError : ""}`
-    let countClass = `${s.SPAN} ${props.counterTop ? s.full : ""}`
+export function Display({counterTop, error, countValue}: DisplayPropsType) {
+
+    let displayClass = `${s.display} ${error ? s.displayError : ""}`
+    let countClass = `${s.SPAN} ${counterTop ? s.full : ""}`
 
     return (
         <div className={displayClass}>
             {
-                props.error
-                    ? <span className={s.SPAN}>{props.error}</span>
-                    : <span className={countClass}>{props.countValue}</span>
+                error
+                    ? <span className={s.SPAN}>{error}</span>
+                    : <span className={countClass}>{countValue}</span>
             }
         </div>
     );

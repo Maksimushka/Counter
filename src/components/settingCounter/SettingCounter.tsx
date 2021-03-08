@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './SettingCounter.module.css';
 import {Button} from "../button/Button";
-import {SettingDisplay} from "../settingDisplay/SettingDisplay";
+import {SettingDisplay} from "./settingDisplay/SettingDisplay";
 
-type SettingCounterPropsType = {
+export type SettingCounterPropsType = {
     isCount: boolean
     setCount: () => void
     setSetting: () => void

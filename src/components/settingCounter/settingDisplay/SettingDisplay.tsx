@@ -45,7 +45,7 @@ export function SettingDisplay(
                 <span>start value:</span>
                 <input
                     className={ error && s.error}
-                    onFocus={ setSetting }
+                    onFocus={  onSetSetting }
                     value={ startValue }
                     type="number"
                     onChange={ onChangeStartHandler }

@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './Counter.module.css';
-import {Display} from "../display/Display";
+import {Display} from "./display/Display";
 import {Button} from "../button/Button";
 
-type CounterPropsType = {
+export type CounterPropsType = {
     counter: number | string
     increaseCount: () => void
     resetCount: () => void
@@ -13,7 +13,14 @@ type CounterPropsType = {
     startValue: number
 }
 
-export function Counter({isCount, error, resetCount, increaseCount, counter, maxValue, startValue}: CounterPropsType) {
+export const Counter: React.FC<CounterPropsType> = (props) => {
+
+    const {
+        isCount, error,
+        resetCount, increaseCount,
+        counter, maxValue,
+        startValue} = props
+
     let disableInc = !isCount || counter === maxValue
     let disableReset = !isCount || counter === startValue
     let counterTop = counter === maxValue

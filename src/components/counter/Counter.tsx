@@ -19,7 +19,8 @@ export const Counter: React.FC<CounterPropsType> = (props) => {
         isCount, error,
         resetCount, increaseCount,
         counter, maxValue,
-        startValue} = props
+        startValue
+    } = props
 
     let disableInc = !isCount || counter === maxValue
     let disableReset = !isCount || counter === startValue

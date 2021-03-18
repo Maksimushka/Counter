@@ -1,31 +1,13 @@
-type setStartValueACType = {
-    type: 'SET_START_VALUE'
-    value: number
-}
-type setMaxValueACType = {
-    type: 'SET_MAX_VALUE'
-    value: number
-}
-type increaseCountValueACType = {
-    type: 'INCREASE_COUNT_VALUE'
-}
-type resetCountValueACType = {
-    type: 'RESET_COUNT_VALUE'
-}
-type setErrorACType = {
-    type: 'SET_ERROR'
-}
-type deleteErrorACType = {
-    type: 'DELETE_ERROR'
-}
-type setIsCountACType = {
-    type: 'SET_IS_COUNT'
-    value: boolean
-}
-type setValueFromLocalStorageACType = {
-    type: 'SET_VALUE_FROM_LOCAL_STORAGE'
-    value: number
-}
+import {
+    deleteErrorACType,
+    increaseCountValueACType,
+    resetCountValueACType,
+    setErrorACType,
+    setIsCountACType,
+    setMaxValueACType,
+    setStartValueACType, setValueFromLocalStorageACType
+} from './action';
+
 export type actionTypes = setStartValueACType | setMaxValueACType
     | setErrorACType | setIsCountACType | resetCountValueACType
     | increaseCountValueACType | deleteErrorACType | setValueFromLocalStorageACType
@@ -67,9 +49,7 @@ const counterReducer = (state: InitialStateType = initialState, action: actionTy
             return  { ...state,  error: '' }
         }
         case 'SET_VALUE_FROM_LOCAL_STORAGE': {
-            return {
-                ...state
-            }
+            return { ...state }
         }
         default: {
             return state
@@ -79,13 +59,4 @@ const counterReducer = (state: InitialStateType = initialState, action: actionTy
 
 export default counterReducer
 
-export const setStartValueAC = (value: number): setStartValueACType => ({ type: 'SET_START_VALUE', value })
-export const setMaxValueAC = (value: number): setMaxValueACType => ({ type: 'SET_MAX_VALUE', value })
-export const resetCountValueAC = (): resetCountValueACType => ({ type: 'RESET_COUNT_VALUE' })
-export const increaseCountValueAC = (): increaseCountValueACType => ({ type: 'INCREASE_COUNT_VALUE' })
-export const setErrorAC = (): setErrorACType => ({ type: 'SET_ERROR' })
-export const deleteErrorAC = (): deleteErrorACType => ({ type: 'DELETE_ERROR' })
-export const setIsCountAC = (value: boolean): setIsCountACType => ({ type: 'SET_IS_COUNT', value })
-export const setValueFromLocalStorageAC = (value: number): setValueFromLocalStorageACType => (
-    { type: 'SET_VALUE_FROM_LOCAL_STORAGE', value }
-    )
+

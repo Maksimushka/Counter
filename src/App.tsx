@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootStateReduxType} from './redux/store';
@@ -12,8 +12,9 @@ import {
     resetCountValueAC,
     setErrorAC,
     setIsCountAC,
-    setMaxValueAC, setStartValueAC
+    setMaxValueAC, setStartValueAC,
 } from './redux/action';
+
 type selectorType = {
     startValue: number
     maxValue: number
@@ -22,43 +23,24 @@ type selectorType = {
     counterValue: number
 }
 
-//
-// // useEffect(() => {
-// //     let valueAsString = localStorage.getItem('values')
-// //     if (valueAsString) {
-// //         let a = JSON.parse(valueAsString)
-// //         setStartValue(a.startValue)
-// //         setCounter(a.startValue)
-// //         setMaxValue(a.maxValue)
-// //     }
-// // }, [])
-//
-// // function setToLocalStorage() {
-// //     let values = {
-// //         startValue,
-// //         maxValue
-// //     }
-// //     localStorage.setItem('values', JSON.stringify(values))
-// // }
-
 function App() {
-
     const {
         error,
         isCount,
         counterValue,
         startValue,
         maxValue
-    }  = useSelector<RootStateReduxType, selectorType>((state) => state )
-
+    } = useSelector<RootStateReduxType, selectorType>((state) => state)
     const dispatch = useDispatch<Dispatch<actionTypes>>()
 
-    const setSetting = () => dispatch(setIsCountAC(false))
-    const setCount = () => dispatch(setIsCountAC(true))
-    const increaseCount = () => dispatch(increaseCountValueAC())
-    const resetCount = () => dispatch(resetCountValueAC())
+    const setSetting = useCallback(() => dispatch(setIsCountAC(false)), [dispatch])
+    const setCount = useCallback(() => {
+        dispatch(setIsCountAC(true))
+    }, [dispatch])
+    const increaseCount = useCallback(() => dispatch(increaseCountValueAC()), [dispatch])
+    const resetCount = useCallback(() => dispatch(resetCountValueAC()), [dispatch])
 
-    const changeMaxValue = (value: number) => {
+    const changeMaxValue = useCallback((value: number) => {
         if (value < 0 || value <= startValue) {
             dispatch(setErrorAC())
             dispatch(setMaxValueAC(value))
@@ -66,8 +48,8 @@ function App() {
             dispatch(setMaxValueAC(value))
             dispatch(deleteErrorAC())
         }
-    }
-    const changeStartValue = (value: number) => {
+    }, [dispatch, startValue])
+    const changeStartValue = useCallback((value: number) => {
         if (value < 0 || value >= maxValue) {
             dispatch(setErrorAC())
             dispatch(setStartValueAC(value))
@@ -75,19 +57,18 @@ function App() {
             dispatch(setStartValueAC(value))
             dispatch(deleteErrorAC())
         }
-    }
+    }, [dispatch, maxValue])
 
     return (
         <div className="App">
             <SettingCounter
                 isCount={isCount} setCount={setCount} setSetting={setSetting}
                 maxValue={maxValue} startValue={startValue} changeMaxValue={changeMaxValue}
-                changeStartValue={changeStartValue} error={error} />;
+                changeStartValue={changeStartValue} error={error}/>
             <Counter
                 isCount={isCount} error={error} maxValue={maxValue}
                 startValue={startValue} counter={counterValue}
-                increaseCount={increaseCount} resetCount={resetCount} />
-
+                increaseCount={increaseCount} resetCount={resetCount}/>
         </div>
     );
 }

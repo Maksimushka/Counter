@@ -36,6 +36,5 @@ export const increaseCountValueAC = (): increaseCountValueACType => ({ type: 'IN
 export const setErrorAC = (): setErrorACType => ({ type: 'SET_ERROR' })
 export const deleteErrorAC = (): deleteErrorACType => ({ type: 'DELETE_ERROR' })
 export const setIsCountAC = (value: boolean): setIsCountACType => ({ type: 'SET_IS_COUNT', value })
-export const setValueFromLocalStorageAC = (value: number): setValueFromLocalStorageACType => (
-    { type: 'SET_VALUE_FROM_LOCAL_STORAGE', value }
-)
+
+

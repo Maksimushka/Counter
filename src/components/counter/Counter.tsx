@@ -13,7 +13,9 @@ export type CounterPropsType = {
     startValue: number
 }
 
-export const Counter: React.FC<CounterPropsType> = (props) => {
+export const Counter: React.FC<CounterPropsType> = React.memo((props) => {
+
+    console.log('Counter render')
 
     const {
         isCount, error,
@@ -41,4 +43,4 @@ export const Counter: React.FC<CounterPropsType> = (props) => {
             </div>
         </div>
     );
-}
+})

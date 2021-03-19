@@ -14,8 +14,10 @@ export type SettingCounterPropsType = {
     error: string
 }
 
-export function SettingCounter(props: SettingCounterPropsType) {
+export const SettingCounter = React.memo((props: SettingCounterPropsType) => {
     let disableSet = props.isCount || !!props.error
+
+    console.log('SettingCounter render')
 
     return (
         <div className={ s.SetCounter }>
@@ -35,4 +37,4 @@ export function SettingCounter(props: SettingCounterPropsType) {
             </div>
         </div>
     );
-}
+})

@@ -1,39 +1,35 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import s from './Counter.module.css';
 import {Display} from "./display/Display";
 import {Button} from "../button/Button";
+import {increaseCountValueAC, resetCountValueAC} from '../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {Dispatch} from 'redux';
+import {actionTypes} from '../../redux/countReducer';
+import {RootStateReduxType} from '../../redux/store';
+import {SelectorType} from '../../App';
 
-export type CounterPropsType = {
-    counter: number | string
-    increaseCount: () => void
-    resetCount: () => void
-    isCount: boolean
-    error: string
-    maxValue: number
-    startValue: number
-}
-
-export const Counter: React.FC<CounterPropsType> = React.memo((props) => {
-
-    console.log('Counter render')
-
+export const Counter: React.FC = () => {
     const {
         isCount, error,
-        resetCount, increaseCount,
-        counter, maxValue,
+        maxValue, counterValue,
         startValue
-    } = props
+    } = useSelector<RootStateReduxType, SelectorType>((state) => state)
+    const dispatch = useDispatch<Dispatch<actionTypes>>()
 
-    let disableInc = !isCount || counter === maxValue
-    let disableReset = !isCount || counter === startValue
-    let counterTop = counter === maxValue
+    const increaseCount = useCallback(() => dispatch(increaseCountValueAC()), [dispatch])
+    const resetCount = useCallback(() => dispatch(resetCountValueAC()), [dispatch])
+
+    let disableInc = !isCount || counterValue === maxValue
+    let disableReset = !isCount || counterValue === startValue
+    let counterTop = counterValue === maxValue
 
     return (
         <div className={ s.counter }>
             <Display
                 counterTop={counterTop}
                 error={error}
-                countValue={isCount ? counter: 'PRESS BUTTON SET'}
+                countValue={isCount ? counterValue: 'PRESS BUTTON SET'}
             />
             <div className={s.buttons}>
                 <Button onChangeCount={ increaseCount }
@@ -43,4 +39,4 @@ export const Counter: React.FC<CounterPropsType> = React.memo((props) => {
             </div>
         </div>
     );
-})
+}

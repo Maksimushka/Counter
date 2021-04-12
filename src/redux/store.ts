@@ -15,14 +15,4 @@ store.subscribe(() => {
 
 export default store
 
-// // useEffect(() => {
-// //     let valueAsString = localStorage.getItem('values')
-// //     if (valueAsString) {
-// //         let a = JSON.parse(valueAsString)
-// //         setStartValue(a.startValue)
-// //         setCounter(a.startValue)
-// //         setMaxValue(a.maxValue)
-// //     }
-// // }, [])
-
 export type RootStateReduxType = ReturnType<typeof counterReducer>

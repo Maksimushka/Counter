@@ -2,12 +2,19 @@
     padding-top: 15px;
     border: 2px solid #61dafb;
     border-radius: 5px;
-    width: 400px;
+    min-width: 320px;
+    max-width: 370px;
     height: 300px;
 }
 
+@media screen and (max-width: 750px) {
+    .SetCounter {
+        margin-bottom: 30px;
+    }
+}
+
 .buttons {
-    width: 350px;
+    width: 300px;
     margin: 0 auto;
     padding: 20px 20px 20px 40px;
     border: 2px solid #61dafb;

@@ -1,40 +1,57 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import s from './SettingCounter.module.css';
 import {Button} from "../button/Button";
 import {SettingDisplay} from "./settingDisplay/SettingDisplay";
+import {deleteErrorAC, setErrorAC, setIsCountAC, setMaxValueAC, setStartValueAC} from '../../redux/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {Dispatch} from 'redux';
+import {actionTypes} from '../../redux/countReducer';
+import {RootStateReduxType} from '../../redux/store';
+import {SelectorType} from '../../App';
 
-export type SettingCounterPropsType = {
-    isCount: boolean
-    setCount: () => void
-    setSetting: () => void
-    maxValue: number
-    startValue: number
-    changeMaxValue: (value: number) => void
-    changeStartValue: (value: number) => void
-    error: string
-}
+export const SettingCounter = () => {
+    const {
+        startValue, maxValue, isCount, error
+    } = useSelector<RootStateReduxType, SelectorType>((state) => state)
+    const dispatch = useDispatch<Dispatch<actionTypes>>()
 
-export const SettingCounter = React.memo((props: SettingCounterPropsType) => {
-    let disableSet = props.isCount || !!props.error
+    let disableSet = isCount || !!error
 
-    console.log('SettingCounter render')
+    const setSetting = useCallback(() => dispatch(setIsCountAC(false)), [dispatch])
+    const setCount = useCallback(() => dispatch(setIsCountAC(true)), [dispatch])
+    const changeMaxValue = useCallback((value: number) => {
+        if (value < 0 || value <= startValue) {
+            dispatch(setErrorAC())
+            dispatch(setMaxValueAC(value))
+        } else {
+            dispatch(setMaxValueAC(value))
+            dispatch(deleteErrorAC())
+        }
+    }, [dispatch, startValue])
+    const changeStartValue = useCallback((value: number) => {
+        if (value < 0 || value >= maxValue) {
+            dispatch(setErrorAC())
+            dispatch(setStartValueAC(value))
+        } else {
+            dispatch(setStartValueAC(value))
+            dispatch(deleteErrorAC())
+        }
+    }, [dispatch, maxValue])
 
     return (
         <div className={ s.SetCounter }>
             <SettingDisplay
-                setSetting={ props.setSetting }
-                changeMaxValue={ props.changeMaxValue }
-                changeStartValue={ props.changeStartValue }
-                maxValue={ props.maxValue }
-                startValue={ props.startValue }
-                error={ props.error }
+                setSetting={ setSetting }
+                changeMaxValue={ changeMaxValue }
+                changeStartValue={ changeStartValue }
+                maxValue={ maxValue }
+                startValue={ startValue }
+                error={ error }
             />
             <div className={s.buttons}>
-                <Button
-                    onChangeCount={ props.setCount }
-                    disable={ disableSet }
-                        >set</Button>
+                <Button onChangeCount={ setCount }
+                        disable={ disableSet } >set</Button>
             </div>
         </div>
     );
-})
+}

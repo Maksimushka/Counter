@@ -12,7 +12,6 @@ export type SelectorType = {
 }
 
 function App() {
-
     return (
         <div className="App">
             <SettingCounter />
